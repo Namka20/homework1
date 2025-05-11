@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.entity.BankAccount;
+import org.example.entity.User;
+import org.example.service.BankService;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -33,5 +37,12 @@ public class BankApplication {
         // Выводим историю транзакций
         System.out.println("Transaction history for ACC123:");
         bankService.getTransactionHistory(acc1).forEach(System.out::println);
+
+        // Вывод текущего баланса
+        System.out.println("Total balance: " + bankService.getTotalBalance(user));
+
+        //Снятие наличных
+        acc1.withdraw(new BigDecimal(100));
+        System.out.println(acc1.getBalance());
     }
 }
