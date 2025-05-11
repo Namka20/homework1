@@ -4,12 +4,14 @@ import org.example.entity.BankAccount;
 import org.example.entity.Transaction;
 import org.example.entity.User;
 import org.example.enums.TransactionType;
+import org.example.utils.validators.ValidateBalance;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 
 public class BankService {
+    ValidateBalance validateBalance = new ValidateBalance();
 
     /**
      * Метод создания нового счета для пользователя.
@@ -32,11 +34,7 @@ public class BankService {
      * @param amount сумма транзакции
      */
     public void transfer(BankAccount source, BankAccount target, BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("Некорректная сунна для перевода");
-        } else if (source.getBalance().compareTo(amount) < 0) {
-            System.out.println("Недостаточно средств для перевода");
-        }
+        validateBalance.checkBalanceCompareToAmountAndOnPositiveSum(source.getBalance(), amount);
         source.withdraw(amount);
         target.deposit(amount);
         Transaction transaction = new Transaction(amount, TransactionType.TRANSFER, source, target);
